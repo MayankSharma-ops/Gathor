@@ -1,154 +1,304 @@
 'use client';
 
-import { useRef, useCallback } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 
 const experiments = [
   {
     title: 'GathorChat',
-    description: 'Real-time conversations, reimagined. A fast, clean chat platform built for people who value simplicity.',
+    subtitle: 'FEATURING',
+    description:
+      'Real-time conversations, reimagined. A fast, clean chat platform built for people who value simplicity and speed.',
     badge: 'Live Experiment',
-    badgeColor: 'bg-emerald-50 text-emerald-600 border-emerald-200',
     link: 'https://chat.gathor.online',
-    featured: true,
-    iconId: 'chat',
+    bg: 'from-blue-100 via-indigo-100 to-purple-100',
+    accentBg: 'bg-gradient-to-br from-[#2D7FF9]/10 via-[#5C6BC0]/10 to-[#8A4FFF]/10',
+    dotColor: 'bg-[#2D7FF9]',
+    iconColor: '#2D7FF9',
+    iconBg: 'from-[#2D7FF9] to-[#8A4FFF]',
   },
   {
     title: 'Mailor',
-    description: 'AI-powered email automation that writes, organizes, and sends for you. Zero cost, zero friction.',
+    subtitle: 'FEATURING',
+    description:
+      'AI-powered email automation that writes, organizes, and sends for you. Zero cost, zero friction. Your inbox, supercharged.',
     badge: 'Free Utility',
-    badgeColor: 'bg-blue-50 text-blue-600 border-blue-200',
     link: 'https://mailor.gathor.online',
-    iconId: 'mail',
+    bg: 'from-sky-100 via-cyan-50 to-blue-100',
+    accentBg: 'bg-gradient-to-br from-[#0EA5E9]/10 via-[#2D7FF9]/10 to-[#38BDF8]/10',
+    dotColor: 'bg-[#0EA5E9]',
+    iconColor: '#0EA5E9',
+    iconBg: 'from-[#2D7FF9] to-[#38BDF8]',
   },
   {
     title: 'Resume Analyzer',
-    description: 'An AI Telegram bot that analyzes your resume against job descriptions, scoring it with actionable fixes.',
+    subtitle: 'FEATURING',
+    description:
+      'An AI Telegram bot that analyzes your resume against job descriptions. Get a match score with actionable fixes — instantly.',
     badge: 'Telegram Bot',
-    badgeColor: 'bg-purple-50 text-purple-600 border-purple-200',
     link: 'https://t.me/resume_analyzer_gathor_bot',
-    iconId: 'resume',
+    bg: 'from-purple-100 via-violet-50 to-fuchsia-100',
+    accentBg: 'bg-gradient-to-br from-[#8A4FFF]/10 via-[#A855F7]/10 to-[#C084FC]/10',
+    dotColor: 'bg-[#8A4FFF]',
+    iconColor: '#8A4FFF',
+    iconBg: 'from-[#8A4FFF] to-[#C084FC]',
   },
   {
     title: 'SipUp',
-    description: 'Hydration with a game layer. Track your intake, earn streaks, and hit daily goals.',
+    subtitle: 'COMING SOON',
+    description:
+      'Hydration with a game layer. Track your daily water intake, earn streaks, compete with friends, and hit your health goals.',
     badge: 'In Development',
-    badgeColor: 'bg-orange-50 text-orange-600 border-orange-200',
-    iconId: 'sip',
+    link: undefined,
+    bg: 'from-orange-100 via-amber-50 to-yellow-100',
+    accentBg: 'bg-gradient-to-br from-[#FF8B3D]/10 via-[#FBBF24]/10 to-[#F59E0B]/10',
+    dotColor: 'bg-[#FF8B3D]',
+    iconColor: '#FF8B3D',
+    iconBg: 'from-[#FF8B3D] to-[#FBBF24]',
   },
 ];
 
-function CardIcon({ id }: { id: string }) {
-  if (id === 'chat') return (
-    <svg viewBox="0 0 48 48" className="w-12 h-12" fill="none">
-      <defs><linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#2D7FF9"/><stop offset="100%" stopColor="#8A4FFF"/></linearGradient></defs>
-      <rect x="4" y="8" width="40" height="28" rx="14" fill="url(#cg)" opacity="0.15"/>
-      <rect x="4" y="8" width="40" height="28" rx="14" stroke="url(#cg)" strokeWidth="2.5" fill="none"/>
-      <path d="M14 40L20 36H28" stroke="url(#cg)" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-      <circle cx="18" cy="22" r="2.5" fill="#2D7FF9"/><circle cx="24" cy="22" r="2.5" fill="#5C6BC0"/><circle cx="30" cy="22" r="2.5" fill="#8A4FFF"/>
-    </svg>
-  );
-  if (id === 'mail') return (
-    <svg viewBox="0 0 48 48" className="w-12 h-12" fill="none">
-      <defs><linearGradient id="mg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#2D7FF9"/><stop offset="100%" stopColor="#38BDF8"/></linearGradient></defs>
-      <rect x="4" y="10" width="40" height="28" rx="6" fill="url(#mg)" opacity="0.12"/>
-      <rect x="4" y="10" width="40" height="28" rx="6" stroke="url(#mg)" strokeWidth="2.5" fill="none"/>
-      <path d="M4 14L24 26L44 14" stroke="#2D7FF9" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-      <path d="M36 18L40 14" stroke="#FFD93D" strokeWidth="2.5" strokeLinecap="round"/>
-      <path d="M38 22L42 18" stroke="#FFD93D" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-  if (id === 'resume') return (
-    <svg viewBox="0 0 48 48" className="w-12 h-12" fill="none">
-      <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#8A4FFF"/><stop offset="100%" stopColor="#C084FC"/></linearGradient></defs>
-      <rect x="10" y="4" width="28" height="40" rx="4" fill="url(#rg)" opacity="0.12"/>
-      <rect x="10" y="4" width="28" height="40" rx="4" stroke="url(#rg)" strokeWidth="2.5" fill="none"/>
-      <line x1="16" y1="14" x2="32" y2="14" stroke="#8A4FFF" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="16" y1="20" x2="28" y2="20" stroke="#A78BFA" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="16" y1="26" x2="30" y2="26" stroke="#A78BFA" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M34 32L35.5 35L38 34L35.5 36.5L36 40L34 37.5L32 40L32.5 36.5L30 34L32.5 35L34 32Z" fill="#C084FC"/>
-    </svg>
-  );
+function ExperimentIcon({ index, size = 120 }: { index: number; size?: number }) {
+  const gradId = `iconGrad${index}`;
+  if (index === 0) {
+    return (
+      <svg viewBox="0 0 120 120" width={size} height={size} fill="none">
+        <defs>
+          <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#2D7FF9" />
+            <stop offset="100%" stopColor="#8A4FFF" />
+          </linearGradient>
+        </defs>
+        <rect x="10" y="20" width="100" height="70" rx="35" fill={`url(#${gradId})`} opacity="0.15" />
+        <rect x="10" y="20" width="100" height="70" rx="35" stroke={`url(#${gradId})`} strokeWidth="3" fill="none" />
+        <path d="M35 100L48 90H65" stroke={`url(#${gradId})`} strokeWidth="3" strokeLinecap="round" fill="none" />
+        <circle cx="42" cy="55" r="6" fill="#2D7FF9" />
+        <circle cx="60" cy="55" r="6" fill="#5C6BC0" />
+        <circle cx="78" cy="55" r="6" fill="#8A4FFF" />
+      </svg>
+    );
+  }
+  if (index === 1) {
+    return (
+      <svg viewBox="0 0 120 120" width={size} height={size} fill="none">
+        <defs>
+          <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#2D7FF9" />
+            <stop offset="100%" stopColor="#38BDF8" />
+          </linearGradient>
+        </defs>
+        <rect x="10" y="25" width="100" height="70" rx="14" fill={`url(#${gradId})`} opacity="0.12" />
+        <rect x="10" y="25" width="100" height="70" rx="14" stroke={`url(#${gradId})`} strokeWidth="3" fill="none" />
+        <path d="M10 35L60 65L110 35" stroke="#2D7FF9" strokeWidth="3" strokeLinecap="round" fill="none" />
+        <path d="M88 42L98 34" stroke="#FFD93D" strokeWidth="3" strokeLinecap="round" />
+        <path d="M92 52L102 44" stroke="#FFD93D" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M84 36L94 28" stroke="#FFD93D" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  if (index === 2) {
+    return (
+      <svg viewBox="0 0 120 120" width={size} height={size} fill="none">
+        <defs>
+          <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#8A4FFF" />
+            <stop offset="100%" stopColor="#C084FC" />
+          </linearGradient>
+        </defs>
+        <rect x="25" y="8" width="70" height="104" rx="10" fill={`url(#${gradId})`} opacity="0.12" />
+        <rect x="25" y="8" width="70" height="104" rx="10" stroke={`url(#${gradId})`} strokeWidth="3" fill="none" />
+        <line x1="38" y1="32" x2="82" y2="32" stroke="#8A4FFF" strokeWidth="3" strokeLinecap="round" />
+        <line x1="38" y1="48" x2="72" y2="48" stroke="#A78BFA" strokeWidth="3" strokeLinecap="round" />
+        <line x1="38" y1="64" x2="76" y2="64" stroke="#A78BFA" strokeWidth="3" strokeLinecap="round" />
+        <line x1="38" y1="80" x2="68" y2="80" stroke="#C4B5FD" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M86 82L89 88L94 86L89 91L90 98L86 93L82 98L83 91L78 86L83 88L86 82Z" fill="#C084FC" />
+      </svg>
+    );
+  }
   return (
-    <svg viewBox="0 0 48 48" className="w-12 h-12" fill="none">
-      <defs><linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#FF8B3D"/><stop offset="100%" stopColor="#FBBF24"/></linearGradient></defs>
-      <path d="M16 12C16 12 14 20 14 28C14 36 20 42 24 42C28 42 34 36 34 28C34 20 32 12 32 12" fill="url(#sg)" opacity="0.15"/>
-      <path d="M16 12C16 12 14 20 14 28C14 36 20 42 24 42C28 42 34 36 34 28C34 20 32 12 32 12" stroke="url(#sg)" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-      <path d="M18 28C20 26 28 26 30 28" stroke="#FF8B3D" strokeWidth="2" strokeLinecap="round" opacity="0.6"/>
-      <circle cx="24" cy="8" r="2" fill="#FF8B3D"/>
+    <svg viewBox="0 0 120 120" width={size} height={size} fill="none">
+      <defs>
+        <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FF8B3D" />
+          <stop offset="100%" stopColor="#FBBF24" />
+        </linearGradient>
+      </defs>
+      <path d="M40 25C40 25 35 50 35 70C35 90 47 108 60 108C73 108 85 90 85 70C85 50 80 25 80 25" fill={`url(#${gradId})`} opacity="0.15" />
+      <path d="M40 25C40 25 35 50 35 70C35 90 47 108 60 108C73 108 85 90 85 70C85 50 80 25 80 25" stroke={`url(#${gradId})`} strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M44 72C48 68 72 68 76 72" stroke="#FF8B3D" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
+      <path d="M47 60C50 57 70 57 73 60" stroke="#FBBF24" strokeWidth="2" strokeLinecap="round" opacity="0.35" />
+      <circle cx="60" cy="16" r="5" fill="#FF8B3D" />
     </svg>
-  );
-}
-
-function ExperimentCard({ experiment, index }: { experiment: typeof experiments[0]; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(cardRef, { once: true, margin: '-80px' });
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-  }, []);
-
-  return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ type: 'spring', stiffness: 100, damping: 15, delay: index * 0.1 }}
-      onMouseMove={handleMouseMove}
-      className="card-spotlight bg-white rounded-3xl p-8 shadow-[0_12px_32px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_48px_rgba(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500 cursor-default group h-full"
-    >
-      <div className="relative z-10">
-        <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border mb-6 ${experiment.badgeColor}`}>
-          {experiment.badge}
-        </span>
-        <div className="mb-5 transition-transform duration-500 group-hover:scale-110">
-          <CardIcon id={experiment.iconId} />
-        </div>
-        <h3 className="text-xl font-bold text-[#1F2937] mb-3">{experiment.title}</h3>
-        <p className="text-[#6B7280] text-base leading-relaxed mb-6">{experiment.description}</p>
-        {experiment.link ? (
-          <a href={experiment.link} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#2D7FF9] hover:text-[#1A6FE8] transition-colors">
-            Visit →
-          </a>
-        ) : (
-          <span className="text-sm font-medium text-[#9CA3AF]">Coming soon</span>
-        )}
-      </div>
-    </motion.div>
   );
 }
 
 export default function BentoGrid() {
+  const [active, setActive] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-advance carousel
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % experiments.length);
+    }, 6000);
+  }, []);
+
+  useEffect(() => {
+    resetTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [resetTimer]);
+
+  const goTo = (i: number) => {
+    setActive(i);
+    resetTimer();
+  };
+
+  const exp = experiments[active];
 
   return (
-    <section id="experiments" ref={sectionRef} className="relative py-24 md:py-32 px-6">
+    <section id="experiments" ref={sectionRef} className="relative py-20 md:py-28 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ type: 'spring', stiffness: 100, damping: 15 }} className="text-center mb-16">
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+          className="text-center mb-12"
+        >
           <div className="inline-flex items-center gap-3 mb-4">
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none">
-              <path d="M9 3L10.5 7.5L15 6L12 10L15 14L10.5 12.5L9 17L7.5 12.5L3 14L6 10L3 6L7.5 7.5L9 3Z" fill="url(#sg2)"/>
-              <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#FF8B3D"/><stop offset="50%" stopColor="#2D7FF9"/><stop offset="100%" stopColor="#8A4FFF"/></linearGradient></defs>
+              <path d="M9 3L10.5 7.5L15 6L12 10L15 14L10.5 12.5L9 17L7.5 12.5L3 14L6 10L3 6L7.5 7.5L9 3Z" fill="url(#sg2)" />
+              <defs>
+                <linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FF8B3D" />
+                  <stop offset="50%" stopColor="#2D7FF9" />
+                  <stop offset="100%" stopColor="#8A4FFF" />
+                </linearGradient>
+              </defs>
             </svg>
-            <span className="text-xs font-bold tracking-[0.25em] uppercase text-[#6B7280]">Latest Experiments</span>
+            <span className="text-xs font-bold tracking-[0.25em] uppercase text-[#6B7280]">
+              Our Experiments
+            </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2937] leading-tight">
-            Built in the Lab, <span className="gradient-text">made for everyone.</span>
+            Built in the Lab,{' '}
+            <span className="gradient-text">made for everyone.</span>
           </h2>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2"><ExperimentCard experiment={experiments[0]} index={0} /></div>
-          <div className="md:col-span-1"><ExperimentCard experiment={experiments[1]} index={1} /></div>
-          <div className="md:col-span-1"><ExperimentCard experiment={experiments[2]} index={2} /></div>
-          <div className="md:col-span-2"><ExperimentCard experiment={experiments[3]} index={3} /></div>
-        </div>
+
+        {/* Carousel Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ type: 'spring', stiffness: 80, damping: 15, delay: 0.15 }}
+          className="relative"
+        >
+          <div
+            className={`relative overflow-hidden rounded-[32px] bg-gradient-to-br ${exp.bg} transition-colors duration-700 min-h-[420px] md:min-h-[480px]`}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+                className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 p-8 sm:p-12 md:p-16 relative z-10"
+              >
+                {/* Left: Text content */}
+                <div className="flex-1 text-center md:text-left max-w-lg">
+                  <span className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase text-[#6B7280] mb-5">
+                    {exp.subtitle}
+                  </span>
+
+                  <h3 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#1F2937] mb-5 leading-tight">
+                    {exp.title}
+                  </h3>
+
+                  <p className="text-base sm:text-lg text-[#4B5563] leading-relaxed mb-8 max-w-md mx-auto md:mx-0">
+                    {exp.description}
+                  </p>
+
+                  {exp.link ? (
+                    <a
+                      href={exp.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-[#1F2937] text-white text-sm sm:text-base font-semibold px-7 py-3.5 rounded-full hover:scale-105 hover:bg-[#111827] transition-all duration-300 shadow-lg shadow-black/10"
+                    >
+                      Try It Now
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 bg-white/60 text-[#6B7280] text-sm sm:text-base font-semibold px-7 py-3.5 rounded-full border border-white/80 backdrop-blur-sm">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                      </span>
+                      Coming Soon
+                    </span>
+                  )}
+                </div>
+
+                {/* Right: Large Icon / Visual */}
+                <div className="flex-shrink-0 relative">
+                  <div className="relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] md:w-[280px] md:h-[280px] flex items-center justify-center">
+                    {/* Glow behind icon */}
+                    <div
+                      className="absolute inset-0 rounded-full opacity-30 blur-3xl"
+                      style={{
+                        background: `radial-gradient(circle, ${exp.iconColor}40 0%, transparent 70%)`,
+                      }}
+                    />
+                    {/* Floating icon with subtle rotation */}
+                    <motion.div
+                      animate={{ y: [0, -10, 0], rotate: [0, 2, -2, 0] }}
+                      transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                      className="relative z-10 drop-shadow-lg"
+                    >
+                      <ExperimentIcon index={active} size={180} />
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Decorative: subtle dot pattern */}
+            <div
+              className="absolute inset-0 opacity-[0.03] pointer-events-none"
+              style={{
+                backgroundImage:
+                  'radial-gradient(circle, #1F2937 1px, transparent 1px)',
+                backgroundSize: '24px 24px',
+              }}
+            />
+          </div>
+
+          {/* Navigation Dots */}
+          <div className="flex items-center justify-center gap-2.5 mt-8">
+            {experiments.map((e, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                aria-label={`Go to ${e.title}`}
+                className="group relative p-1"
+              >
+                <span
+                  className={`block rounded-full transition-all duration-500 ${
+                    active === i
+                      ? `w-8 h-3 ${e.dotColor}`
+                      : 'w-3 h-3 bg-[#D1D5DB] hover:bg-[#9CA3AF]'
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
