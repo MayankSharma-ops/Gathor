@@ -25,10 +25,9 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 200, damping: 30, delay: 0.2 }}
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 glass rounded-full px-3 py-2 flex items-center gap-1 transition-shadow duration-500 ${
+        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 glass rounded-full px-3 py-2 flex items-center gap-1 transition-shadow duration-500 nav-fluid ${
           scrolled ? 'shadow-lg shadow-black/5' : 'shadow-md shadow-black/3'
         }`}
-        style={{ width: 'min(90vw, 680px)' }}
       >
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-2 pl-3 pr-4 shrink-0">
@@ -44,16 +43,17 @@ export default function Navbar() {
               <path d="M12 2L13.5 8.5L20 7L15 12L20 17L13.5 15.5L12 22L10.5 15.5L4 17L9 12L4 7L10.5 8.5L12 2Z" stroke="url(#sparkGrad)" strokeWidth="1.5" fill="url(#sparkGrad)" opacity="0.9"/>
             </svg>
           </span>
-          <span className="text-lg font-bold text-[#1F2937] tracking-tight">Gathor</span>
+          <span className="font-bold text-[#1F2937] tracking-tight" style={{ fontSize: 'clamp(0.9rem, 1.2vw, 1.125rem)' }}>Gathor</span>
         </a>
 
-        {/* Desktop Links */}
+        {/* Desktop Links — hidden only on truly small screens via container approach */}
         <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className="px-4 py-2 text-sm font-medium text-[#6B7280] hover:text-[#1F2937] rounded-full hover:bg-black/[0.04] transition-all duration-300"
+              className="px-4 py-2 font-medium text-[#6B7280] hover:text-[#1F2937] rounded-full hover:bg-black/[0.04] transition-all duration-300 whitespace-nowrap"
+              style={{ fontSize: 'clamp(0.75rem, 0.9vw, 0.875rem)' }}
             >
               {link.label}
             </a>
@@ -63,7 +63,11 @@ export default function Navbar() {
         {/* CTA Button */}
         <a
           href="#waitlist"
-          className="hidden md:inline-flex gradient-bg text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:scale-105 transition-transform duration-300 shrink-0 shadow-md shadow-purple-500/20"
+          className="hidden md:inline-flex gradient-bg text-white font-semibold rounded-full hover:scale-105 transition-transform duration-300 shrink-0 shadow-md shadow-purple-500/20 whitespace-nowrap"
+          style={{
+            fontSize: 'clamp(0.75rem, 0.9vw, 0.875rem)',
+            padding: 'clamp(0.4rem, 0.6vw, 0.625rem) clamp(0.9rem, 1.2vw, 1.25rem)',
+          }}
         >
           Join Waitlist
         </a>

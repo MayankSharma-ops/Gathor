@@ -159,8 +159,8 @@ export default function BentoGrid() {
   const exp = experiments[active];
 
   return (
-    <section id="experiments" ref={sectionRef} className="relative py-20 md:py-28 px-4 sm:px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="experiments" ref={sectionRef} className="relative fluid-section-padding">
+      <div className="fluid-container">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -179,11 +179,11 @@ export default function BentoGrid() {
                 </linearGradient>
               </defs>
             </svg>
-            <span className="text-xs font-bold tracking-[0.25em] uppercase text-[#6B7280]">
+            <span className="featuring-badge">
               Our Experiments
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2937] leading-tight">
+          <h2 className="fluid-section-heading text-[#1F2937]">
             Built in the Lab,{' '}
             <span className="gradient-text">made for everyone.</span>
           </h2>
@@ -196,8 +196,13 @@ export default function BentoGrid() {
           transition={{ type: 'spring', stiffness: 80, damping: 15, delay: 0.15 }}
           className="relative"
         >
+          {/* Container query wrapper — layout changes based on THIS element's width, not viewport */}
           <div
-            className={`relative overflow-hidden rounded-[32px] bg-gradient-to-br ${exp.bg} transition-colors duration-700 min-h-[420px] md:min-h-[480px]`}
+            className={`carousel-card-wrapper relative overflow-hidden bg-gradient-to-br ${exp.bg} transition-colors duration-700`}
+            style={{
+              borderRadius: 'clamp(16px, 2.5vw, 32px)',
+              minHeight: 'clamp(320px, 35vw, 480px)',
+            }}
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -206,19 +211,19 @@ export default function BentoGrid() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -60 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-                className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 p-8 sm:p-12 md:p-16 relative z-10"
+                className="carousel-card-inner"
               >
                 {/* Left: Text content */}
-                <div className="flex-1 text-center md:text-left max-w-lg">
-                  <span className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase text-[#6B7280] mb-5">
+                <div className="card-text-content">
+                  <span className="featuring-badge mb-5">
                     {exp.subtitle}
                   </span>
 
-                  <h3 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#1F2937] mb-5 leading-tight">
+                  <h3 className="fluid-card-title text-[#1F2937] mb-5">
                     {exp.title}
                   </h3>
 
-                  <p className="text-base sm:text-lg text-[#4B5563] leading-relaxed mb-8 max-w-md mx-auto md:mx-0">
+                  <p className="fluid-body text-[#4B5563] mb-8" style={{ maxWidth: '28rem' }}>
                     {exp.description}
                   </p>
 
@@ -227,7 +232,7 @@ export default function BentoGrid() {
                       href={exp.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-[#1F2937] text-white text-sm sm:text-base font-semibold px-7 py-3.5 rounded-full hover:scale-105 hover:bg-[#111827] transition-all duration-300 shadow-lg shadow-black/10"
+                      className="inline-flex items-center gap-2 bg-[#1F2937] text-white font-semibold rounded-full hover:scale-105 hover:bg-[#111827] transition-all duration-300 shadow-lg shadow-black/10 fluid-cta"
                     >
                       Try It Now
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -235,7 +240,7 @@ export default function BentoGrid() {
                       </svg>
                     </a>
                   ) : (
-                    <span className="inline-flex items-center gap-2 bg-white/60 text-[#6B7280] text-sm sm:text-base font-semibold px-7 py-3.5 rounded-full border border-white/80 backdrop-blur-sm">
+                    <span className="inline-flex items-center gap-2 bg-white/60 text-[#6B7280] font-semibold rounded-full border border-white/80 backdrop-blur-sm fluid-cta">
                       <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
@@ -246,8 +251,8 @@ export default function BentoGrid() {
                 </div>
 
                 {/* Right: Large Icon / Visual */}
-                <div className="flex-shrink-0 relative">
-                  <div className="relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] md:w-[280px] md:h-[280px] flex items-center justify-center">
+                <div className="card-visual">
+                  <div className="fluid-icon-container">
                     {/* Glow behind icon */}
                     <div
                       className="absolute inset-0 rounded-full opacity-30 blur-3xl"
