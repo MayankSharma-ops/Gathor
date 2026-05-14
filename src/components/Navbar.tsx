@@ -30,7 +30,7 @@ export default function Navbar() {
         }`}
       >
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-2 pl-3 pr-4 shrink-0">
+        <a href="/" className="flex items-center gap-2 pl-3 pr-4 shrink-0">
           <span className="relative flex items-center justify-center w-7 h-7">
             <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none">
               <defs>

@@ -193,13 +193,206 @@ body {
   font-weight: 700;
 }
 
-/* Fluid footer wordmark */
-.fluid-footer-wordmark {
-  font-size: clamp(5rem, 15vw, 16rem);
-  font-weight: 800;
-  color: #F3F4F6;
-  letter-spacing: -0.02em;
+/* ===== FOOTER STYLES ===== */
+
+/* Footer container helper */
+.footer-container {
+  width: min(92%, 1100px);
+  margin-left: auto;
+  margin-right: auto;
 }
+
+/* Upper section */
+.footer-upper {
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  border-top: 1px solid #E5E7EB;
+}
+
+/* Grid: CTA left, Nav columns right */
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* CTA area */
+.footer-cta-area {
+  flex: 1 1 320px;
+  min-width: 0;
+  max-width: 420px;
+}
+
+.footer-cta-heading {
+  font-size: clamp(1.1rem, 1.8vw + 0.3rem, 1.55rem);
+  font-weight: 600;
+  line-height: 1.45;
+  color: #1F2937;
+  margin-bottom: clamp(1.2rem, 2vw, 1.8rem);
+  letter-spacing: -0.01em;
+}
+
+/* Social icons row */
+.footer-social-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  flex-wrap: wrap;
+}
+
+.footer-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid #D1D5DB;
+  color: #1F2937;
+  background: transparent;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.footer-social-icon:hover {
+  border-color: #1F2937;
+  background: #1F2937;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(31, 41, 55, 0.15);
+}
+
+.footer-newsletter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 clamp(1.2rem, 2vw, 1.8rem);
+  border-radius: 999px;
+  border: 1.5px solid #1F2937;
+  color: #1F2937;
+  font-size: clamp(0.8rem, 0.9vw + 0.15rem, 0.95rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  background: transparent;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.footer-newsletter-btn:hover {
+  background: #1F2937;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(31, 41, 55, 0.18);
+}
+
+/* Navigation columns */
+.footer-nav-columns {
+  display: flex;
+  gap: clamp(2rem, 4vw, 4rem);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.footer-nav-col {
+  min-width: 120px;
+}
+
+.footer-nav-label {
+  font-size: clamp(0.7rem, 0.75vw + 0.1rem, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: capitalize;
+  color: #1F2937;
+  margin-bottom: clamp(0.7rem, 1.2vw, 1rem);
+}
+
+.footer-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 0.7vw, 0.6rem);
+}
+
+.footer-nav-link {
+  font-size: clamp(0.82rem, 0.85vw + 0.1rem, 0.95rem);
+  color: #6B7280;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  line-height: 1.5;
+}
+
+.footer-nav-link:hover {
+  color: #1F2937;
+}
+
+/* Giant wordmark section */
+.footer-wordmark-section {
+  padding: 0 clamp(1rem, 3vw, 2rem);
+  overflow: hidden;
+  line-height: 0.85;
+  user-select: none;
+  pointer-events: none;
+}
+
+.footer-giant-wordmark {
+  display: block;
+  font-size: clamp(5rem, 18vw, 20rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #1F2937;
+  line-height: 0.85;
+  white-space: nowrap;
+}
+
+/* Bottom bar */
+.footer-bottom-bar {
+  border-top: 1px solid #E5E7EB;
+  padding: clamp(1rem, 2vw, 1.4rem) 0;
+}
+
+.footer-bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-bottom-brand {
+  font-size: clamp(0.85rem, 1vw + 0.1rem, 1rem);
+  font-weight: 700;
+  color: #1F2937;
+  letter-spacing: -0.01em;
+}
+
+.footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
+  flex-wrap: wrap;
+}
+
+.footer-bottom-link {
+  font-size: clamp(0.72rem, 0.8vw + 0.08rem, 0.85rem);
+  color: #9CA3AF;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.footer-bottom-link:hover {
+  color: #1F2937;
+}
+
+.footer-bottom-copyright {
+  pointer-events: none;
+}
+
+/* ===== END FOOTER ===== */
 
 /* Fluid container — never overflows, scales gracefully */
 .fluid-container {
@@ -261,16 +454,6 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-}
-
-/* Footer layout — row always, just scales down */
-.footer-content {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-  flex-wrap: wrap;
 }
 
 /* Nav fluid width */
