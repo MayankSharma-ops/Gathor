@@ -17,7 +17,7 @@ const navigation = [
 
 const connect = [
   { label: 'GitHub', href: 'https://github.com/MayankSharma-ops' },
-  { label: 'Contact', href: 'mailto:hello@gathor.online' },
+  { label: 'Contact', href: 'mailto:mail@gathor.online' },
 ];
 
 /* Simple inline SVG icons */
@@ -80,7 +80,7 @@ export default function Footer() {
                   <GitHubIcon />
                 </a>
                 <a
-                  href="mailto:hello@gathor.online"
+                  href="mailto:mail@gathor.online"
                   className="footer-social-icon"
                   aria-label="Email"
                 >
@@ -95,7 +95,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="mailto:hello@gathor.online?subject=Subscribe to Gathor Newsletter"
+                  href="mailto:mail@gathor.online?subject=Subscribe to Gathor Newsletter"
                   className="footer-newsletter-btn"
                 >
                   Sign up for our newsletter
@@ -180,7 +180,7 @@ export default function Footer() {
           <div className="footer-bottom-links">
             <a href="#" className="footer-bottom-link">About Gathor</a>
             <a href="#experiments" className="footer-bottom-link">Experiments</a>
-            <a href="mailto:hello@gathor.online" className="footer-bottom-link">Contact</a>
+            <a href="mailto:mail@gathor.online" className="footer-bottom-link">Contact</a>
             <span className="footer-bottom-link footer-bottom-copyright">
               © {new Date().getFullYear()}
             </span>

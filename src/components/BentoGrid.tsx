@@ -36,7 +36,7 @@ const experiments = [
     description:
       'An AI Telegram bot that analyzes your resume against job descriptions. Get a match score with actionable fixes — instantly.',
     badge: 'Telegram Bot',
-    link: 'https://t.me/resume_analyzer_gathor_bot',
+    link: 'https://t.me/Ai_CV_Resume_bot',
     bg: 'from-purple-100 via-violet-50 to-fuchsia-100',
     accentBg: 'bg-gradient-to-br from-[#8A4FFF]/10 via-[#A855F7]/10 to-[#C084FC]/10',
     dotColor: 'bg-[#8A4FFF]',
@@ -47,7 +47,7 @@ const experiments = [
     title: 'SipUp',
     subtitle: 'COMING SOON',
     description:
-      'Hydration with a game layer. Track your daily water intake, earn streaks, compete with friends, and hit your health goals.',
+      'Hydration Mobile App with a game layer. Track your daily water intake, earn streaks, compete with friends, and hit your health goals.',
     badge: 'In Development',
     link: undefined,
     bg: 'from-orange-100 via-amber-50 to-yellow-100',
